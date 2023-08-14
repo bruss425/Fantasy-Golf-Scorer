@@ -1,4 +1,5 @@
 import requests
+import config
 
 """
 ID by tournament (put the tourney id here to make proccessing easier)
@@ -15,7 +16,7 @@ url = "https://golf-leaderboard-data.p.rapidapi.com/leaderboard/" + tournament_i
 
 ## do the git ignore config.py things later 
 headers = {
-	"X-RapidAPI-Key": "b3e2fe7f33mshba762ec5a11343fp1cd6e4jsna308f09531ab",
+	"X-RapidAPI-Key": config.API_KEY,
 	"X-RapidAPI-Host": "golf-leaderboard-data.p.rapidapi.com"
 }
 
