@@ -1,5 +1,6 @@
 import requests
 import config
+from sheets import*
 
 """
 ID by tournament (put the tourney id here to make proccessing easier)
@@ -7,6 +8,7 @@ ID by tournament (put the tourney id here to make proccessing easier)
 2023: 
 Players Championship  = 496
 St. Jude = 521
+BMW Championship : 522
 """
 
 tournament_id = "521"
@@ -22,21 +24,21 @@ headers = {
 
 response = requests.get(url, headers=headers).json()
 
-#array of players 
-picks = ["Xander Schauffele", "Max Homa", "Wyndham Clark", "Seamus Power"]
-
+\
 players_total = response['results']['tournament']['live_details']['players']
 cut_number = response['results']['tournament']['live_details']['cut_value']
 
 
 
-## create an array with the positions values of each of the players 
-def get_positions(arr):
+
+
+## create an array with the positions values of each of the players from the array of names
+def get_positions(array):
     positions_array = [None] * 4
     x = 0
     for i in range(players_total):
        for k in range(4):
-           name = picks[k].split()
+           name = array[k].split()
            pick_first = name[0]
            pick_last = name[1]
 
@@ -50,10 +52,9 @@ def get_positions(arr):
     
     return positions_array
 
-## arrary to put into the calculate points 
-
-def calulate_points():
-    placement = get_positions(picks)
+## the actual scoring function 
+def calulate_points(array):
+    placement = get_positions(array)
     sum = 0
     for i in range(4): 
         if(placement[i] > cut_number):
@@ -78,23 +79,20 @@ def calulate_points():
             sum += 2
         else: sum += 1
     
+    sum = str(sum)
     return sum
 
-points_scored = calulate_points()
-print(points_scored)
+
+print("John's players: ", john_players, "\nPoints: " + calulate_points(john_players))
+print("Joe's players: ", joe_players, "\nPoints: " + calulate_points(joe_players))
+print("Ben's players: ", ben_players, "\nPoints: " + calulate_points(ben_players))
+print("Thomas' players: ", thomas_players, "\nPoints: " + calulate_points(thomas_players))
+print("Andrew's players: ", andrew_players, "\nPoints: " + calulate_points(andrew_players))
+print("Evan's players: ", evan_players, "\nPoints: " + calulate_points(evan_players))
+print("Mike's players: ", mike_players, "\nPoints: " + calulate_points(mike_players))
+
 
 """
-figure out how to pull data from the rows of players in the sheets 
-then put each of of the four names into assigned arrays 
-    honeslty i think i could just call them array 1 thru 7 
-    I would have to have the row numbers set and i coukd just change them every week 
-then calcularte the points for each of the 7 arrays ---> Loop? 
-rank the points by name of arrays --> Loop 
-then turn those names into real player names like array_2 = Ben 
-and present a scoring ranking such as 
-1) Ben: 19 points
-2) Johns: 23 points 
-
 for special items such as 1.5x tourneys i can either write a function or manually do it
 """
 
